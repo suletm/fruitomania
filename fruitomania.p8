@@ -11,6 +11,10 @@ function _init()
     timer = 0  // global timer
     logfile = "fruitomania.log"
 
+    // Shaker configuration
+    shaketimer = 0 // how long to shake the screen
+    shake_intensity = 2
+
     // directions
     lookright = true
     lookleft = false
@@ -44,6 +48,7 @@ function move_berries()
     for berry in all(active_berries) do
         // berry collided with ground ?
         if berry.y + berry.speed > 97 then
+            shaketimer = 3
             del(active_berries, berry)
             player.score["fail"] += 1
             sfx(1)
@@ -68,7 +73,17 @@ function init_random_berry()
     printh("new berry was spawned. count of active berries now: "..#active_berries, logfile)
 end
 
+function shake(intensity)
+    if shaketimer > 0 then
+        camera(-intensity, -intensity)
+        shaketimer -= 1
+    else
+        camera(0,0) // restore
+    end
+end
+
 function _update()
+    shake(shake_intensity)
     if timer % (30 * berry_spawn_timer) == 0 then // every 5 seconds or 150 frames generate a new berry
        init_random_berry()
         printh("new berry initialized on timer: ".. timer , logfile) 
