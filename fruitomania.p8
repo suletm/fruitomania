@@ -29,6 +29,7 @@ function _init()
     player.speed = 1
     player.direction = lookright // initialize char looking to the right
     player.score = {["yum"] = 0, ["fail"] = 0}
+    player.runspeed = 3
 
     // keeps track of active berries on the screen
     active_berries = {}
@@ -94,11 +95,19 @@ function _update()
  
     move_berries() // advances berry movement from the sky
     if btn(0) then
-        player.x = player.x - player.speed*1
+        if btn(4) then
+            player.x = player.x - player.runspeed
+        else
+            player.x = player.x - player.speed
+        end
         player.direction = lookleft
     end
     if btn(1) then
-        player.x = player.x + player.speed*1
+        if btn(4) then
+            player.x = player.x + player.runspeed
+        else
+            player.x = player.x + player.speed
+        end
         player.direction = lookright
     end
     if btn(0) or btn(1) then
